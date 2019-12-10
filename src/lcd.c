@@ -1,6 +1,11 @@
 // Set of the lcd screen
 
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/iom32.h>
+#include <stdio.h>
 
+#include "timer2.h"
 #include "lcd.h"
 
 void lcd_en_write(void){
@@ -66,12 +71,49 @@ void lcd_init(void){
 		timer2_wait(5);
 }
 
-int lcd_putChar(char c, FILE *p){
+int i = 0;	// number of output char
 
-	lcd_writeData(c);
+int lcd_putChar(char c, FILE *p){
+	if(i < 16){
+		lcd_locate(0, i);
+		}
+	else if(i >= 16 && i < 32)
+		lcd_locate(1 , i - 16);
+	i++;
+	if (i > 32) {
+		i = 0;
+		lcd_locate(0, i);
+	}
+	switch(c){
+				case 'ä' : lcd_writeData(0xe1);	// write data 0b11100001
+				break;
+				case 'ö' : lcd_writeData(0xef);	// write data 0b11101111
+				break;
+				case 'ü' : lcd_writeData(0xf5);	// write data 0b11110101
+				break;
+				case 'ß' : lcd_writeData(0xe2);	// write data 0b11100010
+				break;
+				default : lcd_writeData(c);
+			}
+
 	return 0;
 }
 
+void lcd_locate(uint8_t row, uint8_t col){
+	uint8_t address;
+	if(row == 0) {
+		address = 0x80 + col;	// locate at first row
+		i= col;
+	}
+	else {
+		address = 0xc0 + col;	// locate at second row
+		i= 16 + col;
+	}
+	lcd_writeCommand(address);	// write the position to DDRAM
+}
+
 void lcd_clear(void){
+	i = 0;
+	lcd_locate(0,0);
 	lcd_writeCommand(0x01);
 }

@@ -1,6 +1,8 @@
 #include <avr/io.h>
 #include <avr/iom32.h>
 
+#include "led.h"
+
 void led_init(){
 	DDRD |= (1<<PD0)|(1<<PD1)|(1<<PD6);
 	PORTD &= ~((1<<PD0)|(1<<PD1)|(1<<PD6));

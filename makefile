@@ -71,7 +71,7 @@ notarget:
 #program.elf: $(SRCDIR)/program.o
 #prg.elf: $(SRCDIR)/p1.o $(SRCDIR)/p2.o
 
-Mikrocontrolle.elf: $(SRCDIR)/led.o $(SRCDIR)/timer0.o $(SRCDIR)/timer2.o $(SRCDIR)/lcd.o $(SRCDIR)/Mikrocontrolle.o
+Mikrocontrolle.elf: $(SRCDIR)/led.o $(SRCDIR)/timer0.o $(SRCDIR)/timer2.o $(SRCDIR)/lcd.o $(SRCDIR)/encoder.o $(SRCDIR)/spi.o $(SRCDIR)/rfm69c.o $(SRCDIR)/Mikrocontrolle.o
 
 #
 # ENDE DER EIGENEN TARGETS
