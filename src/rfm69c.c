@@ -8,15 +8,6 @@
 
 #include "rfm69c.h"
 
-
-#include "spi.h"
-#include "avr_base.h"
-#include "inttypes.h"
-#include <avr/io.h>
-#include <avr/iom32.h>
-#include <avr/interrupt.h>
-#include "timer2.h"
-
 /*
 
  * Pin config:
@@ -71,7 +62,7 @@ uint8_t currentMode;
 
 
 
-bool RFM_Initialize(const int8_t p_out, const uint8_t nodeAddress) {
+bool RFM_Initialize(const int8_t p_out, const uint8_t nodeAddress) {	// p_out is the output power of pins, nodeAddress
 
 	// set up the NSS pin
 
@@ -286,7 +277,6 @@ void RFM_Send(const uint8_t recipient, const char *message) {
 	}
 
 
-
 	// write into FIFO
 
 	writeBurst(0x00, payload, PAYLOAD_SIZE);
@@ -319,8 +309,6 @@ Packet RFM_GetRxPacket(void) {
 	for ( i= 0; i < MAX_TEXT_LENGTH + 1; i++)
 
 		ret.messageText[i] = msg[i];
-
-
 
 	return ret;
 

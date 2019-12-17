@@ -9,8 +9,15 @@
 
 #define RFM69C_H
 
+#include <avr/io.h>
+#include <avr/iom32.h>
+#include <avr/interrupt.h>
 
 #include "avr_base.h"
+#include "spi.h"
+#include "inttypes.h"
+#include "timer2.h"
+#include "transceiver.h"
 
 
 
