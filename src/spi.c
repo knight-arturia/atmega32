@@ -19,7 +19,7 @@ void SPI_Initialize(void){
 	init_flag = 1;
 }
 
-void SPI_Transmission(uint8_t *dataBuffer, const uint8_t length){
+void SPI_Transmission(char *dataBuffer, const uint8_t length){
 	int i = 0;
 	while(i < length){
 		SPDR = dataBuffer[i];

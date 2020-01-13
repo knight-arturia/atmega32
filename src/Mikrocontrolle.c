@@ -38,32 +38,37 @@ void Send(char *str){
 	RFM_StandbyMode();
 	RFM_Send( 1, str);
 	RFM_TxMode();
+
 	while(1){
-		led_toggle(6);
 		timer2_wait(2000);
-		SPI_Transmission(str, 16);
-		if(trans_get_flag() == 1) break;
+		if(transceiver_get_flag() == 1) break;
 	}
 	RFM_StandbyMode();
 	RFM_RxMode();
 }
 
 int main(void) {
+	led_init();
 	timer0_init();
 	timer2_init();
+	encoder_INT0_init();
+	encoder_INT1_init();
 	lcd_init();
-	led_init();
 	SPI_Initialize();
 	transceiver_initialize();
+		while(1){
+			transceiver_input_msg();	// input the message with encoder
+			if(encoder_get_longpressflag() == 1)
+				break;
+		}
+		if( RFM_Initialize( 10, 233) == 1){	// p_out is 10 and nodeAddress is 233
+			Send( transceiver_get_msg() );
+		} else{
+			printf("Kann nicht Sendung");
+		}
+		transceiver_clear();	// clear the message after send the message
 
-	char test_str[16] = { "abcdefghijklmnop" };	// send information
 
-	if( RFM_Initialize( 10, 233) == 1){	// p_out is 10 and nodeAddress is 233
-		Send( test_str );
-	}
-	while(1){
-
-	}
 	return 0;
 }
 /*

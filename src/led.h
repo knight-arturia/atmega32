@@ -2,7 +2,8 @@
 
 #ifndef __LED_H
 #define __LED_H
-void led_init();
+
+void led_init(void);
 
 void led_red(uint8_t);
 

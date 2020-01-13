@@ -9,6 +9,6 @@
 
 void SPI_Initialize(void);
 
-void SPI_Transmission(uint8_t *dataBuffer, const uint8_t length);
+void SPI_Transmission(char *dataBuffer, const uint8_t length);
 
 _Bool SPI_IsEnabled(void);
