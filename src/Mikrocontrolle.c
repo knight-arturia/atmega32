@@ -28,24 +28,9 @@
 
 #define F_CPU 16000000UL
 
-void Send(char *str){
-	lcd_clear();
-	printf("%s\n",str);
-	lcd_locate(1 , 0);
-	printf("%s\n","Sendung...");	// show the send information at display
-
-	clear_flag();	// clear the trans_interrupt_flag
-	RFM_StandbyMode();
-	RFM_Send( 1, str);
-	RFM_TxMode();
-
-	while(1){
-		timer2_wait(2000);
-		if(transceiver_get_flag() == 1) break;
-	}
-	RFM_StandbyMode();
-	RFM_RxMode();
-}
+const uint8_t receiver_id = 0xcd;
+const uint8_t own_id = 0xcc;
+const int8_t out_power = 10;
 
 int main(void) {
 	led_init();
@@ -55,19 +40,13 @@ int main(void) {
 	encoder_INT1_init();
 	lcd_init();
 	SPI_Initialize();
-	transceiver_initialize();
-		while(1){
-			transceiver_input_msg();	// input the message with encoder
-			if(encoder_get_longpressflag() == 1)
-				break;
-		}
-		if( RFM_Initialize( 10, 233) == 1){	// p_out is 10 and nodeAddress is 233
-			Send( transceiver_get_msg() );
-		} else{
-			printf("Kann nicht Sendung");
-		}
-		transceiver_clear();	// clear the message after send the message
+	RFM_Initialize(out_power, own_id);
+	transceiver_init();
 
+	while(1){
+
+		transceiver_run(receiver_id);
+	}
 
 	return 0;
 }

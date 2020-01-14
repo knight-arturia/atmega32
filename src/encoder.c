@@ -77,6 +77,8 @@ _Bool encoder_get_longpressflag(void){
 // confirm turn direction and impulse number
 ISR(INT0_vect){
 
+	led_toggle(0);
+
 	if(PIND & (1 << PD4)){
 		turn_count++;
 		clockwise = 1;	// turn at clockwise
@@ -88,6 +90,9 @@ ISR(INT0_vect){
 
 // confirm press time
 ISR(INT1_vect){
+
+	led_toggle(1);
+
 	if(press_flag == 0){
 		press_time = timer2_get();
 		press_flag = 1;
