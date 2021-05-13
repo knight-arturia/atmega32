@@ -7,7 +7,7 @@
 #define MOSI PB5
 #define MISO PB6
 #define SCK PB7
-#define _SS PB4
+#define _SS PB4      // slave select pin, synchronize the slave by pull high
 
 _Bool init_flag = 0;
 
@@ -23,7 +23,7 @@ void SPI_Transmission(char *dataBuffer, const uint8_t length){
 	int i = 0;
 	while(i < length){
 		SPDR = dataBuffer[i];
-		while (! (SPSR & (1 << SPIF)));
+		while (! (SPSR & (1 << SPIF)));  // SPIF is end of Transmition Flag
 		dataBuffer[i] = SPDR;
 		i++;
 	}
